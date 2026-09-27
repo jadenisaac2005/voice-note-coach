@@ -1,0 +1,18 @@
+# Personal recordings stay local
+data/raw/*.wav
+data/raw/*.m4a
+data/raw/*.mp3
+# Transcripts of personal recordings also stay local
+data/transcripts/*.json
+!data/**/.gitkeep
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+.pytest_cache/
+build/
+dist/
+
+.DS_Store
