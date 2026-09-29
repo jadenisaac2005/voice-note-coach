@@ -56,7 +56,7 @@ def transcribe(
 
     out_dir = Path(output_dir) if output_dir is not None else DEFAULT_OUTPUT_DIR
     out_dir.mkdir(parents=True, exist_ok=True)
-    out_path = out_dir / f"{audio.stem}.json"
+    out_path = out_dir / f"{audio.name}.json"
     out_path.write_text(json.dumps(result, indent=2))
     result["output_path"] = str(out_path)
     return result
