@@ -26,7 +26,7 @@ def transcribe(
     model_size: str = WHISPER_MODEL_SIZE,
     output_dir: str | Path | None = None,
 ) -> dict:
-    """Transcribe `audio_path` and write the result to `<output_dir>/<stem>.json`.
+    """Transcribe `audio_path` and write the result to `<output_dir>/<name>.json`.
 
     Returns a JSON-serializable dict with top-level `words` (text/start/end)
     and `segments` (text/start/end), plus metadata. `output_dir` defaults to
