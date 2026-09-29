@@ -37,7 +37,8 @@ python scripts/run_transcribe.py data/raw/my_note.m4a
 ```
 
 This prints the word count and duration, and saves segment- and word-level
-timestamps to `data/transcripts/my_note.json`.
+timestamps to `data/transcripts/my_note.m4a.json` (the extension is kept so `note.wav` and
+`note.m4a` don't overwrite each other).
 
 Run the tests (macOS only; uses the `say` command to generate test audio):
 

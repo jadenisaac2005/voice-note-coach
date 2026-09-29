@@ -42,5 +42,5 @@ def test_transcribe_structure(tts_wav, tmp_path):
 
     assert result["segments"] and all("text" in s for s in result["segments"])
 
-    saved = json.loads((out_dir / "smoke.json").read_text())
+    saved = json.loads((out_dir / "smoke.wav.json").read_text())
     assert saved["words"] == words
