@@ -3,14 +3,22 @@ def compute_gaps(words):
     gaps = []
     for i in range(len(words)):
         if i == 0:
-            gaps.append(words[i]["start"])
+            gaps.append(round(words[i]["start"], 2))
         else:
-            gaps.append(words[i]["start"] - words[i - 1]["end"])
+            gaps.append(round(words[i]["start"] - words[i - 1]["end"], 2))
     return gaps
 
-words = [
-    {"word": "hello", "start": 0.0, "end": 0.5},
-    {"word": "there", "start": 0.6, "end": 1.0},
-    {"word": "friend", "start": 3.0, "end": 3.4},
-]
-print(compute_gaps(words))
+PAUSE_THRESHOLD = 1
+def count_pauses(gaps, threshold=PAUSE_THRESHOLD):
+    """Number of gaps strictly longer than threshold."""
+    count = 0
+    for gap in gaps:
+        if gap > threshold:
+            count += 1
+    return count
+
+def pause_ratio(gaps, total_time):
+    """Fraction of the clip spent in silence between/before words."""
+    # if total_time == 0:
+    #     return 0.0
+    return sum(gaps) / total_time
