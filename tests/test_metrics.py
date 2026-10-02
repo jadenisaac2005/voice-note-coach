@@ -74,6 +74,7 @@ def test_count_fillers_normalises_whisper_tokens():
         {"text": "uh", "start": 0.4, "end": 0.6},
         {"text": " umbrella", "start": 0.7, "end": 1.1},
         {"text": " table", "start": 1.2, "end": 1.5},
+        {"text": " so", "start": 1.7, "end": 2.0},
     ]
     assert count_fillers(words) == 2   # predict first: which of these four count?
 
