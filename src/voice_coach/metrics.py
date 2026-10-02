@@ -19,6 +19,6 @@ def count_pauses(gaps, threshold=PAUSE_THRESHOLD):
 
 def pause_ratio(gaps, total_time):
     """Fraction of the clip spent in silence between/before words."""
-    # if total_time == 0:
-    #     return 0.0
+    if total_time == 0:
+        return 0.0
     return sum(gaps) / total_time
