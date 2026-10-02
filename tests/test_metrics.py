@@ -1,5 +1,5 @@
 import pytest
-from voice_coach.metrics import compute_gaps, count_pauses, pause_ratio
+from voice_coach.metrics import compute_gaps, count_pauses, pause_ratio, speaking_rate, articulation_rate
 
 def test_borderline_gap_is_not_a_pause():
     words = [
@@ -54,3 +54,16 @@ def test_overlapping_words_give_zero_gap():
         {"word": "b", "start": 0.9, "end": 2.0},   # starts 0.1 s before "a" ends
     ]
     assert compute_gaps(words) == [0.0, 0.0]
+
+def test_rates_sixty_second_example():
+    gaps = [0.5] * 30            # thirty 0.5 s gaps = 15.0 s
+    assert speaking_rate(150, 60.0) == pytest.approx(150.0)
+    assert articulation_rate(150, 60.0, gaps) == pytest.approx(200.0)
+
+def test_rates_equal_when_no_silence():
+    gaps = [0.0, 0.0, 0.0]
+    assert speaking_rate(30, 15.0) == pytest.approx(articulation_rate(30, 15.0, gaps))
+
+def test_rates_zero_time():
+    assert speaking_rate(10, 0.0) == pytest.approx(0.0)
+    assert articulation_rate(10, 0.0, []) == pytest.approx(0.0)

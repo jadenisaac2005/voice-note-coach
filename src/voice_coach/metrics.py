@@ -22,3 +22,16 @@ def pause_ratio(gaps, total_time):
     if total_time == 0:
         return 0.0
     return sum(gaps) / total_time
+
+def speaking_rate(n_words, total_time):
+    """Words per minute over the whole clip, silence included."""
+    if total_time == 0:
+        return 0.0
+    return n_words / total_time * 60.0
+
+def articulation_rate(n_words, total_time, gaps):
+    """Words per minute over speaking time only (all gaps removed)."""
+    speaking_time = total_time - sum(gaps)
+    if speaking_time <= 0:
+        return 0.0
+    return n_words / speaking_time * 60.0
