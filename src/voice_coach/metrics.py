@@ -5,7 +5,7 @@ def compute_gaps(words):
         if i == 0:
             gaps.append(round(words[i]["start"], 2))
         else:
-            gaps.append(round(words[i]["start"] - words[i - 1]["end"], 2))
+            gaps.append(max(0.0, round(words[i]["start"] - words[i - 1]["end"], 2)))
     return gaps
 
 PAUSE_THRESHOLD = 1

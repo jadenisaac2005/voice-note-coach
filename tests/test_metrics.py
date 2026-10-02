@@ -47,3 +47,10 @@ def test_pause_ratio_empty_clip():
     gaps = []
     total_time = 1.0
     assert pause_ratio(gaps, total_time) == pytest.approx(0.0)
+
+def test_overlapping_words_give_zero_gap():
+    words = [
+        {"word": "a", "start": 0.0, "end": 1.0},
+        {"word": "b", "start": 0.9, "end": 2.0},   # starts 0.1 s before "a" ends
+    ]
+    assert compute_gaps(words) == [0.0, 0.0]
