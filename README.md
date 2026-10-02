@@ -1,7 +1,8 @@
 # voice-note-coach
 
-> **Status: week 1, WIP.** Transcription only. No metrics or results yet.
-
+> **Status: work in progress.** Transcription and the core timing metrics
+> (pauses, speaking and articulation rate, filler words) are implemented.
+> The report and accuracy evaluation are still to come. v1 target: 25 Oct 2026.
 ## Problem
 
 Voice notes are an easy way to practise speaking, but they give you no
@@ -48,8 +49,23 @@ pytest
 
 ## Roadmap
 
-- **Week 1:** transcription with word-level timestamps (this).
-- **Week 2:** metrics (pace, fillers, pauses, run-ons) and a feedback report.
+- **Done:** transcription with word-level timestamps; pause, rate and filler metrics.
+- **Next:** longest run-on, a feedback report, accuracy evaluation on my own recordings.
+- **v1 (25 Oct 2026):** public release with real accuracy numbers and limitations.
+- **v2:** disfluency detection, pause tiers, and more metrics.
+
+## Known limitations
+
+- **Filler words.** Only "um" and "uh" are counted. Whisper tends to leave
+  them out of its transcript, so the count is a lower bound. Words like "so",
+  "like" and "right" are not counted, because they are also ordinary words
+  and a word-matching rule can't tell the two uses apart.
+- **Timestamps are estimates.** Word times come from the model, so pause
+  lengths can be off by a fraction of a second.
+- **Articulation rate is speed, not clarity.** It is words per minute with
+  silence removed. None of the metrics measure how clear someone is.
+- **Leading silence counts as a pause.** It includes the delay between
+  pressing record and starting to speak.
 
 ## License
 
