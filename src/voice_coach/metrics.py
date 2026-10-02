@@ -1,3 +1,6 @@
+import string
+
+
 def compute_gaps(words):
     """Return the silence before each word, in seconds."""
     gaps = []
@@ -35,3 +38,17 @@ def articulation_rate(n_words, total_time, gaps):
     if speaking_time <= 0:
         return 0.0
     return n_words / speaking_time * 60.0
+
+FILLERS = {"uh", "um" }   # your list
+
+def clean_token(text):
+    """Lowercase and strip spaces/punctuation so 'Um,' matches 'um'."""
+    return text.lower().strip(string.punctuation + string.whitespace)
+
+def count_fillers(words, fillers=FILLERS):
+    """Number of words whose cleaned text is in the filler set."""
+    count = 0
+    for w in words:
+        if clean_token(w["text"]) in fillers:
+            count += 1
+    return count

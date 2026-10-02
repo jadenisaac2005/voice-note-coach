@@ -1,5 +1,5 @@
 import pytest
-from voice_coach.metrics import compute_gaps, count_pauses, pause_ratio, speaking_rate, articulation_rate
+from voice_coach.metrics import compute_gaps, count_pauses, pause_ratio, speaking_rate, articulation_rate, count_fillers
 
 def test_borderline_gap_is_not_a_pause():
     words = [
@@ -67,3 +67,15 @@ def test_rates_equal_when_no_silence():
 def test_rates_zero_time():
     assert speaking_rate(10, 0.0) == pytest.approx(0.0)
     assert articulation_rate(10, 0.0, []) == pytest.approx(0.0)
+
+def test_count_fillers_normalises_whisper_tokens():
+    words = [
+        {"text": " Um,", "start": 0.0, "end": 0.3},
+        {"text": "uh", "start": 0.4, "end": 0.6},
+        {"text": " umbrella", "start": 0.7, "end": 1.1},
+        {"text": " table", "start": 1.2, "end": 1.5},
+    ]
+    assert count_fillers(words) == 2   # predict first: which of these four count?
+
+def test_count_fillers_empty():
+    assert count_fillers([]) == 0
