@@ -4,14 +4,14 @@ from voice_coach.metrics import compute_gaps, compute_metrics, count_pauses, pau
 def test_borderline_gap_is_not_a_pause():
     words = [
         {"word": "a", "start": 0.0, "end": 1.2},
-        {"word": "b", "start": 2.2, "end": 2.7},   # gap of exactly 1.0 s, built so the float error shows up
+        {"word": "b", "start": 2.2, "end": 2.7},   
     ]
     assert count_pauses(compute_gaps(words)) == 0
 
 def test_one_long_gap_is_one_pause():
     words = [
         {"word": "a", "start": 0.0, "end": 0.5},
-        {"word": "b", "start": 15.5, "end": 16.0},   # gap of 15.0 s
+        {"word": "b", "start": 15.5, "end": 16.0},
     ]
     assert count_pauses(compute_gaps(words)) == 1
 
@@ -21,10 +21,10 @@ def test_empty_list():
     assert pause_ratio([], 0.0) == 0.0
 
 def test_pause_ratio_quarter_silence():
-    # Last word ends at 60.0 s. Silence before words adds up to 15.0 s.
+
     words = [
-        {"word": "a", "start": 5.0, "end": 15.0},   # leading silence: 5.0 s
-        {"word": "b", "start": 25.0, "end": 35.0},   # gap before it: 10.0 s
+        {"word": "a", "start": 5.0, "end": 15.0},
+        {"word": "b", "start": 25.0, "end": 35.0},
         {"word": "c", "start": 35.0, "end": 60.0},
     ]
     gaps = compute_gaps(words)
@@ -32,7 +32,7 @@ def test_pause_ratio_quarter_silence():
     assert pause_ratio(gaps, total_time) == pytest.approx(0.25)
 
 def test_pause_ratio_no_silence():
-    # gaps all 0.0, what should the ratio be?
+
     words = [
         {"word": "a", "start": 0.0, "end": 5.0},
         {"word": "b", "start": 5.0, "end": 10.0},
@@ -43,7 +43,7 @@ def test_pause_ratio_no_silence():
     assert pause_ratio(gaps, total_time) == pytest.approx(0.0)
 
 def test_pause_ratio_empty_clip():
-    # what do you pass in for an empty list, and what should come back?
+
     gaps = []
     total_time = 1.0
     assert pause_ratio(gaps, total_time) == pytest.approx(0.0)
@@ -51,12 +51,12 @@ def test_pause_ratio_empty_clip():
 def test_overlapping_words_give_zero_gap():
     words = [
         {"word": "a", "start": 0.0, "end": 1.0},
-        {"word": "b", "start": 0.9, "end": 2.0},   # starts 0.1 s before "a" ends
+        {"word": "b", "start": 0.9, "end": 2.0},
     ]
     assert compute_gaps(words) == [0.0, 0.0]
 
 def test_rates_sixty_second_example():
-    gaps = [0.5] * 30            # thirty 0.5 s gaps = 15.0 s
+    gaps = [0.5] * 30
     assert speaking_rate(150, 60.0) == pytest.approx(150.0)
     assert articulation_rate(150, 60.0, gaps) == pytest.approx(200.0)
 
@@ -76,7 +76,7 @@ def test_count_fillers_normalises_whisper_tokens():
         {"text": " table", "start": 1.2, "end": 1.5},
         {"text": " so", "start": 1.7, "end": 2.0},
     ]
-    assert count_fillers(words) == 2   # predict first: which of these four count?
+    assert count_fillers(words) == 2
 
 def test_count_fillers_empty():
     assert count_fillers([]) == 0
@@ -93,7 +93,7 @@ def test_longest_run_on():
         {"text": "h", "start": 5.5, "end": 5.9},
         {"text": "i", "start": 6.0, "end": 6.4},
     ]
-    assert longest_run_on(words) == {'seconds': 4.0, 'n_words': 7}    # predict: longest = 4.0 s and 7 words
+    assert longest_run_on(words) == {'seconds': 4.0, 'n_words': 7}
 
 def test_longest_run_on_leading_silence():
     words = [
@@ -107,7 +107,7 @@ def test_longest_run_on_leading_silence():
         {"text": "h", "start": 8.5, "end": 8.9},
         {"text": "i", "start": 9.0, "end": 9.4},
     ]
-    assert longest_run_on(words) == {'seconds': 4.0, 'n_words': 7}    # predict: longest = 4.0 s and 7 words, leading silence doesn't count
+    assert longest_run_on(words) == {'seconds': 4.0, 'n_words': 7}
 
 def test_longest_run_on_empty():
     assert longest_run_on([]) == None
@@ -122,8 +122,8 @@ def make_words(start, n, word_len, gap):
     return words
 
 def test_longest_is_by_seconds_not_words():
-    slow = make_words(0.0, 10, 0.6, 0.2)                     # 10 words
-    fast = make_words(slow[-1]["end"] + 1.5, 20, 0.3, 0.0)   # 20 words, after a 1.5 s gap
+    slow = make_words(0.0, 10, 0.6, 0.2)
+    fast = make_words(slow[-1]["end"] + 1.5, 20, 0.3, 0.0)
     result = longest_run_on(slow + fast)
     assert result == pytest.approx({"seconds": 7.8, "n_words": 10})
 
@@ -140,10 +140,10 @@ def test_compute_metrics_nine_word_example():
         {"text": "i", "start": 6.0, "end": 6.4},
         ]
     m = compute_metrics(words)
-    assert m["speaking_rate"] == pytest.approx(84.375)       # 9 words over how many seconds?
-    assert m["articulation_rate"] == pytest.approx(150.0)   # over how many seconds of speech?
+    assert m["speaking_rate"] == pytest.approx(84.375)
+    assert m["articulation_rate"] == pytest.approx(150.0)
     assert m["pause_count"] == 1
-    assert m["pause_ratio"] == pytest.approx(0.4375)   # 1.5 s of silence over how many seconds?
+    assert m["pause_ratio"] == pytest.approx(0.4375)
     assert m["fillers"] == 0
     assert m["longest_run"] == {"seconds": 4.0, "n_words": 7}
 
@@ -163,9 +163,9 @@ def test_compute_metrics_leading_silence():
         {"text": "i", "start": 9.0, "end": 9.4},
     ]
     m = compute_metrics(words)
-    assert m["speaking_rate"] == pytest.approx(57.4468085106)       # same as test_compute_metrics_nine_word_example
-    assert m["articulation_rate"] == pytest.approx(150.0)   # same as test_compute_metrics_nine_word_example
+    assert m["speaking_rate"] == pytest.approx(57.4468085106)
+    assert m["articulation_rate"] == pytest.approx(150.0)
     assert m["pause_count"] == 2
-    assert m["pause_ratio"] == pytest.approx(0.6170212766)   # same as test_compute_metrics_nine_word_example
+    assert m["pause_ratio"] == pytest.approx(0.6170212766)
     assert m["fillers"] == 0
     assert m["longest_run"] == {"seconds": 4.0, "n_words": 7}

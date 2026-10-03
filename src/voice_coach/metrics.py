@@ -39,7 +39,7 @@ def articulation_rate(n_words, total_time, gaps):
         return 0.0
     return n_words / speaking_time * 60.0
 
-FILLERS = {"uh", "um" }   # your list
+FILLERS = {"uh", "um" }  
 
 def clean_token(text):
     """Lowercase and strip spaces/punctuation so 'Um,' matches 'um'."""
@@ -59,26 +59,26 @@ def split_runs(words, gaps, threshold=PAUSE_THRESHOLD):
     runs = []
     current = []
     for i, w in enumerate(words):
-        if i > 0 and gaps[i] > threshold:   # blank 1: which comparison? why "i > 0"?
+        if i > 0 and gaps[i] > threshold:
             runs.append(current)
             current = []
         current.append(w)
-    if current:                                         # blank 2: what's lost if this is missing?
+    if current:
         runs.append(current)
     return runs
 
 def longest_run_on(words, threshold=PAUSE_THRESHOLD):
     """Longest stretch of speech with no pause, as {"seconds": seconds, "n_words": n_words}."""
     if not words:
-        return                       # same shape as the normal return
-    gaps = compute_gaps(words)          # which existing function?
+        return
+    gaps = compute_gaps(words)
     runs = split_runs(words, gaps, threshold)
-    best = dict()                          # what do you compare runs by? (your decision in #3)
+    best = dict()
     for run in runs:
         if not run:
             continue
         n_words = len(run)
-        seconds = run[-1]["end"] - run[0]["start"]  # first word's start to last word's end
+        seconds = run[-1]["end"] - run[0]["start"]
         if seconds > best.get("seconds", 0):
             best = {"seconds": seconds, "n_words": n_words}
     return best
@@ -88,7 +88,7 @@ def compute_metrics(words):
     if not words:
         return None
     gaps = compute_gaps(words)
-    total_time = words[-1]["end"]              # last words end time
+    total_time = words[-1]["end"]
     return {
         "speaking_rate": speaking_rate(len(words), total_time),
         "articulation_rate": articulation_rate(len(words), total_time, gaps),
