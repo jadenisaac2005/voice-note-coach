@@ -1,5 +1,5 @@
 import pytest
-from voice_coach.metrics import compute_gaps, count_pauses, pause_ratio, speaking_rate, articulation_rate, count_fillers
+from voice_coach.metrics import compute_gaps, count_pauses, pause_ratio, speaking_rate, articulation_rate, count_fillers, longest_run_on
 
 def test_borderline_gap_is_not_a_pause():
     words = [
@@ -80,3 +80,49 @@ def test_count_fillers_normalises_whisper_tokens():
 
 def test_count_fillers_empty():
     assert count_fillers([]) == 0
+
+def test_longest_run_on():
+    words = [
+        {"text": "a", "start": 0.0, "end": 0.4},
+        {"text": "b", "start": 0.5, "end": 0.9},
+        {"text": "c", "start": 1.0, "end": 1.4},
+        {"text": "d", "start": 2.1, "end": 2.5},
+        {"text": "e", "start": 2.6, "end": 3.0},
+        {"text": "f", "start": 3.1, "end": 3.5},
+        {"text": "g", "start": 3.6, "end": 4.0},
+        {"text": "h", "start": 5.5, "end": 5.9},
+        {"text": "i", "start": 6.0, "end": 6.4},
+    ]
+    assert longest_run_on(words) == {'seconds': 4.0, 'n_words': 7}    # predict: longest = 4.0 s and 7 words
+
+def test_longest_run_on_leading_silence():
+    words = [
+        {"text": "a", "start": 3.0, "end": 3.4},
+        {"text": "b", "start": 3.5, "end": 3.9},
+        {"text": "c", "start": 4.0, "end": 4.4},
+        {"text": "d", "start": 5.1, "end": 5.5},
+        {"text": "e", "start": 5.6, "end": 6.0},
+        {"text": "f", "start": 6.1, "end": 6.5},
+        {"text": "g", "start": 6.6, "end": 7.0},
+        {"text": "h", "start": 8.5, "end": 8.9},
+        {"text": "i", "start": 9.0, "end": 9.4},
+    ]
+    assert longest_run_on(words) == {'seconds': 4.0, 'n_words': 7}    # predict: longest = 4.0 s and 7 words, leading silence doesn't count
+
+def test_longest_run_on_empty():
+    assert longest_run_on([]) == None
+
+def make_words(start, n, word_len, gap):
+    """n words from `start`, each word_len long, with `gap` of silence between them."""
+    words = []
+    t = start
+    for i in range(n):
+        words.append({"text": f"w{i}", "start": round(t, 2), "end": round(t + word_len, 2)})
+        t += word_len + gap
+    return words
+
+def test_longest_is_by_seconds_not_words():
+    slow = make_words(0.0, 10, 0.6, 0.2)                     # 10 words
+    fast = make_words(slow[-1]["end"] + 1.5, 20, 0.3, 0.0)   # 20 words, after a 1.5 s gap
+    result = longest_run_on(slow + fast)
+    assert result == pytest.approx({"seconds": 7.8, "n_words": 10})

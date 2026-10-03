@@ -52,3 +52,33 @@ def count_fillers(words, fillers=FILLERS):
         if clean_token(w["text"]) in fillers:
             count += 1
     return count
+
+def split_runs(words, gaps, threshold=PAUSE_THRESHOLD):
+    """Group words into stretches. A new stretch starts when the
+    silence before a word is longer than threshold."""
+    runs = []
+    current = []
+    for i, w in enumerate(words):
+        if i > 0 and gaps[i] > threshold:   # blank 1: which comparison? why "i > 0"?
+            runs.append(current)
+            current = []
+        current.append(w)
+    if current:                                         # blank 2: what's lost if this is missing?
+        runs.append(current)
+    return runs
+
+def longest_run_on(words, threshold=PAUSE_THRESHOLD):
+    """Longest stretch of speech with no pause, as {"seconds": seconds, "n_words": n_words}."""
+    if not words:
+        return                       # same shape as the normal return
+    gaps = compute_gaps(words)          # which existing function?
+    runs = split_runs(words, gaps, threshold)
+    best = dict()                          # what do you compare runs by? (your decision in #3)
+    for run in runs:
+        if not run:
+            continue
+        n_words = len(run)
+        seconds = run[-1]["end"] - run[0]["start"]  # first word's start to last word's end
+        if seconds > best.get("seconds", 0):
+            best = {"seconds": seconds, "n_words": n_words}
+    return best
