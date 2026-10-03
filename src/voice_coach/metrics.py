@@ -82,3 +82,18 @@ def longest_run_on(words, threshold=PAUSE_THRESHOLD):
         if seconds > best.get("seconds", 0):
             best = {"seconds": seconds, "n_words": n_words}
     return best
+
+def compute_metrics(words):
+    """All v1 metrics for one clip, or None if there are no words."""
+    if not words:
+        return None
+    gaps = compute_gaps(words)
+    total_time = words[-1]["end"]              # last words end time
+    return {
+        "speaking_rate": speaking_rate(len(words), total_time),
+        "articulation_rate": articulation_rate(len(words), total_time, gaps),
+        "pause_count": count_pauses(gaps),
+        "pause_ratio": pause_ratio(gaps, total_time),
+        "fillers": count_fillers(words),
+        "longest_run": longest_run_on(words),
+    }

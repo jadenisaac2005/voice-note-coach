@@ -1,5 +1,5 @@
 import pytest
-from voice_coach.metrics import compute_gaps, count_pauses, pause_ratio, speaking_rate, articulation_rate, count_fillers, longest_run_on
+from voice_coach.metrics import compute_gaps, compute_metrics, count_pauses, pause_ratio, speaking_rate, articulation_rate, count_fillers, longest_run_on
 
 def test_borderline_gap_is_not_a_pause():
     words = [
@@ -126,3 +126,46 @@ def test_longest_is_by_seconds_not_words():
     fast = make_words(slow[-1]["end"] + 1.5, 20, 0.3, 0.0)   # 20 words, after a 1.5 s gap
     result = longest_run_on(slow + fast)
     assert result == pytest.approx({"seconds": 7.8, "n_words": 10})
+
+def test_compute_metrics_nine_word_example():
+    words = [
+        {"text": "a", "start": 0.0, "end": 0.4},
+        {"text": "b", "start": 0.5, "end": 0.9},
+        {"text": "c", "start": 1.0, "end": 1.4},
+        {"text": "d", "start": 2.1, "end": 2.5},
+        {"text": "e", "start": 2.6, "end": 3.0},
+        {"text": "f", "start": 3.1, "end": 3.5},
+        {"text": "g", "start": 3.6, "end": 4.0},
+        {"text": "h", "start": 5.5, "end": 5.9},
+        {"text": "i", "start": 6.0, "end": 6.4},
+        ]
+    m = compute_metrics(words)
+    assert m["speaking_rate"] == pytest.approx(84.375)       # 9 words over how many seconds?
+    assert m["articulation_rate"] == pytest.approx(150.0)   # over how many seconds of speech?
+    assert m["pause_count"] == 1
+    assert m["pause_ratio"] == pytest.approx(0.4375)   # 1.5 s of silence over how many seconds?
+    assert m["fillers"] == 0
+    assert m["longest_run"] == {"seconds": 4.0, "n_words": 7}
+
+def test_compute_metrics_empty():
+    assert compute_metrics([]) is None
+
+def test_compute_metrics_leading_silence():
+    words = [
+        {"text": "a", "start": 3.0, "end": 3.4},
+        {"text": "b", "start": 3.5, "end": 3.9},
+        {"text": "c", "start": 4.0, "end": 4.4},
+        {"text": "d", "start": 5.1, "end": 5.5},
+        {"text": "e", "start": 5.6, "end": 6.0},
+        {"text": "f", "start": 6.1, "end": 6.5},
+        {"text": "g", "start": 6.6, "end": 7.0},
+        {"text": "h", "start": 8.5, "end": 8.9},
+        {"text": "i", "start": 9.0, "end": 9.4},
+    ]
+    m = compute_metrics(words)
+    assert m["speaking_rate"] == pytest.approx(57.4468085106)       # same as test_compute_metrics_nine_word_example
+    assert m["articulation_rate"] == pytest.approx(150.0)   # same as test_compute_metrics_nine_word_example
+    assert m["pause_count"] == 2
+    assert m["pause_ratio"] == pytest.approx(0.6170212766)   # same as test_compute_metrics_nine_word_example
+    assert m["fillers"] == 0
+    assert m["longest_run"] == {"seconds": 4.0, "n_words": 7}
