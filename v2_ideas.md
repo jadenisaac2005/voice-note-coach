@@ -20,3 +20,7 @@ Ideas that are out of scope for v1 (public 25 Oct 2026). Nothing here is a commi
 - **Pause tiers** (micro, hesitation, deliberate). Micro-pauses are below the
   resolution of Whisper's word timestamps, so this needs a better source of
   timing than Whisper's word times.
+
+
+
+audio-based leading-gap onset (energy threshold) instead of Whisper's first-word start. Whisper reports 0.00 s when the real lead is under about 1 s.
