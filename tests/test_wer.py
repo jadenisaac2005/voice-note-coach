@@ -28,3 +28,10 @@ def test_wer_whitespace_reference():
     with pytest.raises(ValueError):
         wer("   ", "hello")
 
+def test_normalize_case_punct_and_lone_symbols():
+    assert normalize("Hello, world. -") == ["hello", "world"]
+
+def test_wer_ignores_case_and_punctuation():
+    ref = "Hello, world."
+    hyp = "hello world"
+    assert wer(ref, hyp) == 0.0

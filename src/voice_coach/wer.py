@@ -1,3 +1,6 @@
+from voice_coach.metrics import clean_token
+
+
 def edit_distance(ref, hyp):
     rows, cols = len(ref) + 1, len(hyp) + 1
     d = [[0] * cols for _ in range(rows)]
@@ -18,8 +21,8 @@ def edit_distance(ref, hyp):
     return d[-1][-1]
 
 def wer(ref, hyp):
-    ref_words = ref.split()
-    hyp_words = hyp.split()
+    ref_words = normalize(ref)
+    hyp_words = normalize(hyp)
     if not ref_words and not hyp_words:
         return 0.0
     if not ref_words:
@@ -27,6 +30,9 @@ def wer(ref, hyp):
     return edit_distance(ref_words, hyp_words) / len(ref_words)
 
 def normalize(text):
-    return [w.lower() for w in text.split() if w]
-
-print(normalize("Hello, world."))
+    words = []
+    for w in text.split():
+        w = clean_token(w.lower())
+        if w:
+            words.append(w)
+    return words
