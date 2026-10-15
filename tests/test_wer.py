@@ -1,5 +1,5 @@
 import pytest
-from voice_coach.wer import edit_distance, wer
+from voice_coach.wer import edit_distance, normalize, wer
 
 def test_edit_distance_cat_example():
     assert edit_distance("the cat sat".split(), "cat sat down".split()) == 2
@@ -20,3 +20,11 @@ def test_wer_both_empty():
 def test_wer_empty_reference_nonempty_hyp():
     with pytest.raises(ValueError):
         wer("", "hello")
+
+def test_wer_empty_hypothesis():
+    assert wer("the cat sat", "") == 1.0
+
+def test_wer_whitespace_reference():
+    with pytest.raises(ValueError):
+        wer("   ", "hello")
+

@@ -18,13 +18,15 @@ def edit_distance(ref, hyp):
     return d[-1][-1]
 
 def wer(ref, hyp):
-    if not ref and not hyp:
-        return 0.0
-    if not ref:
-        raise ValueError("Reference string is empty while hypothesis is not.")
-    if not hyp:
-        raise ValueError("Hypothesis string is empty while reference is not.")
     ref_words = ref.split()
     hyp_words = hyp.split()
-    distance = edit_distance(ref_words, hyp_words)
-    return distance / len(ref_words) if len(ref_words) > 0 else float('inf')
+    if not ref_words and not hyp_words:
+        return 0.0
+    if not ref_words:
+        raise ValueError("Reference is empty while hypothesis is not.")
+    return edit_distance(ref_words, hyp_words) / len(ref_words)
+
+def normalize(text):
+    return [w.lower() for w in text.split() if w]
+
+print(normalize("Hello, world."))
