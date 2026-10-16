@@ -15,9 +15,9 @@ Ideas that are out of scope for v1 (public 25 Oct 2026). Nothing here is a commi
   words from its text undercounts. A disfluency detector trained on audio is
   the main v2 project.
 - **Self-corrections.** On clip 08 I said "actually", corrected myself to
-  "really", and Whisper kept "actually" and dropped "really". Whisper's text
-  hides the false start, so word counting can't see self-corrections. An
-  audio-based disfluency detector could.
+  "really", and Whisper kept "actually" and dropped "really". The transcript
+  keeps the false start and loses the fix, so word counting can't see
+  self-corrections. An audio-based disfluency detector could.
 
 ## Pauses
 
