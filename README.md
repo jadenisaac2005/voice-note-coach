@@ -120,14 +120,14 @@ Then I listened to every error and sorted it by cause:
 | Clip | Words | WER | Formatting | Whisper | Me |
 |---|---|---|---|---|---|
 | 07 | 165 | 7.9 % | 3 | 8 | 2 |
-| 08 | 162 | 5.6 % | 5 | 3 | 1 |
+| 08 | 162 | 5.6 % | 5 | 4 | 0 |
 
 - **Formatting:** Whisper heard the word right but wrote it differently
   ("nine" → `9`, "grey" → `gray`, "do not" → `don't`).
 - **Whisper:** I said the script word and Whisper wrote something else.
 - **Me:** I didn't read what was written.
 
-**Whisper's own WER on my voice: 11 / 327 words = 3.4 %.** Full table in
+**Whisper's own WER on my voice: 12 / 327 words = 3.7 %.** Full table in
 `results/wer_07_08.md`.
 
 Caveats: two clips, one speaker, read speech (spontaneous speech will be
