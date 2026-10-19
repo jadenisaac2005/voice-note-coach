@@ -4,10 +4,10 @@
 > report). Public release with demo: **25 Oct 2026**.
 
 Record yourself speaking, get specific feedback on how you talk: pace,
-pauses, filler words, and the longest stretch without a break. Built from
-scratch on top of Whisper's word timestamps. Every metric is hand-written
-and tested, and the accuracy section reports what the numbers can and can't
-tell you.
+pauses, filler words, and the longest stretch without a break. Whisper does
+the transcription. Every metric, and the WER evaluation, is hand-written and
+tested on top of Whisper's word timestamps, and the accuracy section reports
+what the numbers can and can't tell you.
 
 ## Example
 
@@ -134,8 +134,9 @@ The reference passages were written for this test set. Decoding is
 deterministic, so re-running gives the same transcript.
 
 One case worth noting: on clip 08 I said "actually", corrected myself to
-"really", and Whisper kept "actually" and dropped "really". Whisper's text
-hides self-corrections, so nothing built on it can count them (see v2).
+"really", and Whisper kept "actually" and dropped "really". On this clip the
+transcript hid the self-correction, so anything counting from the
+transcript would miss it (see v2).
 
 ### Timestamps
 
@@ -177,7 +178,7 @@ reference passages and results are committed.
 
 ## Roadmap
 
-- **v1 (25 Oct 2026):** this repo, a 60-second demo, a write-up.
+- **v1 (25 Oct 2026):** this repo, a 49-second demo, a write-up.
 - **v2 (from Mar 2027):** my own disfluency detector trained on audio
   spectrograms (e.g. SEP-28k): reproduce a published baseline, run
   ablations, and compare it with Whisper-plus-counting. Parked ideas are in
