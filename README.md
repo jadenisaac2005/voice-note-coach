@@ -1,3 +1,4 @@
+
 # voice-note-coach
 
 > **Status:** v1 code complete (transcription, metrics, WER evaluation, CLI
@@ -32,6 +33,7 @@ Longest run-on
 
 Limits: Whisper often drops um/uh, so the filler count is a lower bound.
 ```
+https://github.com/user-attachments/assets/8b50666f-0208-4ab0-be7b-7256dece6b60
 
 ## How it works
 
