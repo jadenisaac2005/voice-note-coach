@@ -181,10 +181,10 @@ reference passages and results are committed.
 ## Roadmap
 
 - **v1:** released 20 Oct 2026.
-- **v2 (from Mar 2027):** my own disfluency detector trained on audio
-  spectrograms (e.g. SEP-28k): reproduce a published baseline, run
-  ablations, and compare it with Whisper-plus-counting. Parked ideas are in
-  `v2_ideas.md`.
+- **v2 (starts by Mar 2027 at the latest):** my own disfluency detector
+  trained on audio spectrograms (e.g. SEP-28k): reproduce a published
+  baseline, run ablations, and compare it with Whisper-plus-counting. Parked
+  ideas are in `v2_ideas.md`.
 
 ## License
 
