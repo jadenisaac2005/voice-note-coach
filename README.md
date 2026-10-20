@@ -1,8 +1,7 @@
 
 # voice-note-coach
 
-> **Status:** v1 code complete (transcription, metrics, WER evaluation, CLI
-> report). Public release with demo: **25 Oct 2026**.
+> **Status:**  **released 20 Oct**.
 
 Record yourself speaking, get specific feedback on how you talk: pace,
 pauses, filler words, and the longest stretch without a break. Whisper does
@@ -180,7 +179,7 @@ reference passages and results are committed.
 
 ## Roadmap
 
-- **v1 (25 Oct 2026):** this repo, a 49-second demo, a write-up.
+- **v1 :** released 20 Oct
 - **v2 (from Mar 2027):** my own disfluency detector trained on audio
   spectrograms (e.g. SEP-28k): reproduce a published baseline, run
   ablations, and compare it with Whisper-plus-counting. Parked ideas are in
