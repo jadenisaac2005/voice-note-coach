@@ -1,7 +1,7 @@
 
 # voice-note-coach
 
-> **Status:**  **released 20 Oct**.
+> **Status:** **released 20 Oct 2026**.
 
 Record yourself speaking, get specific feedback on how you talk: pace,
 pauses, filler words, and the longest stretch without a break. Whisper does
@@ -32,6 +32,7 @@ Longest run-on
 
 Limits: Whisper often drops um/uh, so the filler count is a lower bound.
 ```
+
 https://github.com/user-attachments/assets/8b50666f-0208-4ab0-be7b-7256dece6b60
 
 ## How it works
@@ -114,7 +115,7 @@ with my own edit-distance code (`src/voice_coach/wer.py`). It has no upper
 limit, so it's a rate, not "percent wrong". Both texts are lowercased and
 stripped of punctuation first. Numbers and contractions are not normalized.
 
-Then I listened to every error and sorted it by cause:
+Then I listened back to the errors and sorted them by cause:
 
 | Clip | Words | WER | Formatting | Whisper | Me |
 |---|---|---|---|---|---|
@@ -179,7 +180,7 @@ reference passages and results are committed.
 
 ## Roadmap
 
-- **v1 :** released 20 Oct
+- **v1:** released 20 Oct 2026.
 - **v2 (from Mar 2027):** my own disfluency detector trained on audio
   spectrograms (e.g. SEP-28k): reproduce a published baseline, run
   ablations, and compare it with Whisper-plus-counting. Parked ideas are in
